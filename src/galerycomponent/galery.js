@@ -4,16 +4,19 @@ import Header from '../headercomponent/header';
 import Filter from './filtermovies'
 import './galery.css';
 import { Button, ButtonGroup } from 'reactstrap';
+import higherOrderComponent from '../Hocs'
+
 
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 
-
 const Galery = (props) => (
-      props.obj.map((el) => 
-         <div className="card  col-lg-6 col-md-4 col-sm d-flex flex-column  m-5 " key={el.id} >
+    console.log(props.obj),
+      props.obj.map((el,index) => 
+
+         <div className="card  col-lg-6 col-md-4 col-sm d-flex flex-column  m-5 " key={el.id} ><p>{el.id}</p>
               <div className=" row btn-group" id="this">
-              <button type="button" class="btn btn-danger btn-circle btn-lg"><i class="glyphicon glyphicon-remove"></i></button>
+              <button type="button" class="btn btn-danger btn-circle btn-lg " onClick={()=>props.delete(el.id)} ><i class="glyphicon glyphicon-remove"></i></button>
               <button type="button" class="btn btn-success btn-circle btn-lg " data-toggle="modal" data-target="#edit-modal"><i class="glyphicon glyphicon-link"></i></button>
                                               
                                               </div>
@@ -24,8 +27,7 @@ const Galery = (props) => (
                                               </div>
 
 
-                                              
-<div className="modal" id="edit-modal" tabIndex="-1" role="dialog">
+ <div className="modal" id="edit-modal" tabIndex="-1" role="dialog" >
 <div className="modal-dialog" role="document">
 <form className="modal-content">
 <div className="modal-header">
@@ -60,10 +62,14 @@ Save changes</button>
 
 </form>
 </div>
-</div>
+</div>                       
+
       )
-                             </div>            
-      )                                                                                
+                             </div>  
+                             
+                             
+      )           
+                                                                           
 )
 
 export default Galery

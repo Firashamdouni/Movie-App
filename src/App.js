@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import Header from './headercomponent/header';
 import Galery from './galerycomponent/galery'
 import Filter from './galerycomponent/filtermovies';
-import Modal from './addmovie/addmovie';
+import Spinner from './spinner';
 import add from './image/add.png';
+import higherOrderComponent from './Hocs';
 import $ from 'jquery';
 
   
 class App extends Component {
+ 
   constructor(props){
     super(props)
     this.state= {  filtervalue : '',
@@ -21,13 +23,19 @@ class App extends Component {
                     ] ,
                       title:'',
                       poster:'',
-                      overview:''
+                      overview:'',
+                      render:true 
                     
                   }
-       
-              
-  }
+              setTimeout(() => {
+                    this.setState({
+                      render:false
+                    })
+                  }, 3000);
+   
+              }
 
+  
 Changevaluetitle = (e) =>{
   const {title} = this.state;
   e.preventDefault();
@@ -78,9 +86,18 @@ Changevalueoverview = (e) =>{
     }
    
   }
+ 
+delete=(i)=>{
+  this.setState({
+    movies:this.state.movies.filter((el,index)=>{
+      return index!=i}
+      )
+  })
+  alert('hello')
 
+}
 
-
+  //Start the timer  
   fetchMovies = () => {
     console.log("azazazz:"+ this.state.filtervalue)
     console.log(this.state.title)
@@ -100,14 +117,11 @@ Changevalueoverview = (e) =>{
   }
 
 
-
     
   render() {
     return (
       <div className="App">
-          <Header  value= {this.state.filtervalue} onChange={(value) =>{let a =this.setState({
-            filtervalue:value 
-          }) }}/>
+         
              <img className="button button5" src={add} alt="add button" data-toggle="modal" data-target="#modal"/>
               <div className="modal" id="modal" tabIndex="-1" role="dialog">
               <div className="modal-dialog" role="document">
@@ -134,7 +148,7 @@ Changevalueoverview = (e) =>{
       <div className="input-group-prepend">
         <span className="input-group-text" >Overview :</span>
       </div>
-      <textarea className="form-control" aria-label="With textarea" value={this.state.overview} onChange={(e)=>{this.Changevalueoverview(e)}}/>
+      <textarea className="form-control" aria-label="With textarea" value={this.state.overview} id={this.state.movies.id} onChange={(e)=>{this.Changevalueoverview(e)}}/>
     </div>
     <div className="modal-footer">
             <button type="submit"  className="btn btn-primary">
@@ -145,8 +159,9 @@ Changevalueoverview = (e) =>{
           </form>
           </div>
           </div>
-   
-              <Galery   obj = {this.fetchMovies()}  />   
+          <Header  value= {this.state.filtervalue} onChange={(value) =>{let a =this.setState({
+        filtervalue:value}) }}/>
+       { this.state.render?<Spinner />:<Galery   obj = {this.fetchMovies()}  delete={(i)=>this.delete(i)} />} 
 
       </div>
       
